@@ -99,7 +99,27 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { id } = request.params;
+  const { user } = request;
+
+  const todo = user.todos.find((todo) => {
+    return todo.id === id;
+  });
+
+  if (!todo) {
+    return response.status(404).json({ error: 'To do not found' });
+  }
+
+  const patchedTodo = {
+    ...todo,
+    done: true,
+  };
+
+  user.todos = user.todos.map((todo) =>
+    todo.id === id ? patchedTodo : todo
+  );
+
+  return response.status(201).json(patchedTodo);
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
