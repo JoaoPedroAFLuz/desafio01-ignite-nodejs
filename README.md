@@ -1,4 +1,4 @@
-## 📃 *to dos* - Gerenciador de tarefas
+## 📃 *To Do API* - Gerenciador de tarefas
 
 ###  ✅ Requisitos
 
