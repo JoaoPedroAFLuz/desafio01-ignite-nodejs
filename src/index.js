@@ -115,15 +115,26 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
     done: true,
   };
 
-  user.todos = user.todos.map((todo) =>
-    todo.id === id ? patchedTodo : todo
-  );
+  user.todos = user.todos.map((todo) => (todo.id === id ? patchedTodo : todo));
 
   return response.status(201).json(patchedTodo);
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { id } = request.params;
+  const { user } = request;
+
+  const todo = user.todos.find((todo) => {
+    return todo.id === id;
+  });
+
+  if (!todo) {
+    return response.status(404).json({ error: 'To do not found' });
+  }
+
+  user.todos = user.todos.filter((todo) => todo.id !== id);
+
+  response.sendStatus(204);
 });
 
 module.exports = app;
